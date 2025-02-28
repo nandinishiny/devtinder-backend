@@ -1,15 +1,21 @@
 import {User} from '../models/user.model.js';
+import validateSignupData from '../utils/validation.js';
 //pushing a new user into database, db will be in other continent. so use async.
 const registerController = async(req,res)=>{
     try {
         const {username,email,password,gender,age,skills,photoUrl} = req.body;
+        validateSignupData(req.body);
         const user = await User.create({username,email,password,gender,age,skills,photoUrl}); //we are creating a new instance of user model.
+        //first validate the data , after that encrypt it.
+        //for validating we use a helper file which is in utils.
+        
         res.status(200).json(user);
         
     } catch (error) {
-        console.log("The error is "+error)
-        res.status(400).send("please fill the details correctly")
-        
+        res.status(400).json({ 
+            success: false, 
+            message: error.message || "Something went wrong" 
+        });
     }
 
 }
