@@ -25,8 +25,7 @@ export const loginController = async(req,res)=>{
         // const jwt_token = jwt.sign({_id:user._id},process.env.JWT_SECRET_KEY,{expiresIn: "8h"});
         //we are using mongodb instance method.
         const jwt_token = await user.getJWT();
-
-        res.status(200).cookie('token', jwt_token, {httpOnly: true,  expires: new Date(Date.now() + 8 * 3600*1000) }).json({success: true, message: "login successfull"});
+        res.status(200).cookie('token', jwt_token, {httpOnly: true,  expires: new Date(Date.now() + 8 * 3600*1000) }).json({success: true, message: `${user.username} login successfull`,user});
 }catch(error){
     res.status(400).json({ 
         success: false, 
