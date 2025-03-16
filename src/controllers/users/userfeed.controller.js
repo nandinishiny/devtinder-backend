@@ -28,6 +28,7 @@ export const userFeedController = async(req,res)=>{
         const users = await User.find({
             $and :[{_id:{$ne:loggedInUser._id}},{_id: {$nin: Array.from(hideUsersFromFeed)}}]
         }).select(" username email gender age skills photoUrl ").skip((page-1)*limit).limit(limit);
+        //Here another feature so that the skills which are matched with user should show first.
         res.status(200).json({success:true, userCount: users.length, data:users});
         
     } catch (error) {
